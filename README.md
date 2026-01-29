@@ -1,6 +1,6 @@
 # ATS Integration Microservice
+ serverless Python microservice that provides a unified REST API for integrating with multiple Applicant Tracking Systems (ATS) like Zoho, Greenhouse, and Workable.
 
-A serverless Python backend service that integrates with an Applicant Tracking System (ATS).
 
 ## Features
 - **Unified API**: Abstraction layer over ATS.
@@ -14,7 +14,26 @@ A serverless Python backend service that integrates with an Applicant Tracking S
 - Python 3.9+
 - AWS Credentials (if deploying to AWS)
 
-### Installation
+
+## 🛠️ Folder Structure
+```text
+ats-microservice/
+├── src/
+│   ├── handlers/          # Lambda Entry Points (REST API)
+│   │   ├── jobs.py         # GET /jobs
+│   │   ├── candidates.py   # POST /candidates
+│   │   └── applications.py # GET /applications
+│   ├── services/          # Core Business Logic
+│   │   └── ats/           # ATS Integration Layer
+│   │       ├── base.py    # Interface Definition
+│   │       ├── factory.py # Provider Selector
+│   │       ├── mock.py    # Mock Provider
+│   │       └── zoho.py    # Zoho Recruit Stub
+├── serverless.yml         # INFRA-as-Code (AWS Lambda Config)
+├── package.json           # Plugin Management
+└── requirements.txt       # Python Dependencies
+
+##Installation
 
 1. **Install Serverless Framework and Plugins**:
    ```bash
@@ -73,6 +92,8 @@ Create a candidate and apply them to a job.
   }
   ```
 - **Response**: `201 Created`
+**Response Screenshot:**
+*(Place screenshot here)*
 
 ### 3. Get Applications
 List applications for a given job.
@@ -91,8 +112,12 @@ List applications for a given job.
   ]
   ```
 
-## Configuration
+### Pagination Implementation
+The service uses a recursive fetching strategy to ensure all data is retrieved, even if the ATS paginates its responses.
 
-Environment variables in `serverless.yml`:
-- `ATS_API_KEY`: API Key for the real ATS.
-- `ATS_BASE_URL`: Base URL for the real ATS.
+*   **How it works**: The `utils/pagination.py` utility handles the loop. It calls the provider's fetch method repeatedly, incrementing the `page` number each time until no more results are found.
+*   **Concurrency & Speed**: Pages are currently fetched **sequentially** (one at a time) to respect ATS rate limits and avoid overwhelming the external API.
+*   **Safety Break**: To prevent infinite loops with mock data or misbehaving APIs, there is a hard safety limit of **100 pages** per request.
+*   **Data Source**: All pages are aggregated into a single list before being returned to the user, providing a seamless "fetch all" experience.
+
+##Developed by Geetanshi jain 29 jan 2026
