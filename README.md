@@ -111,6 +111,10 @@ List applications for a given job.
     }
   ]
   ```
+### 📸 GET /jobs API – Sample Response
+
+![GET /jobs API Screenshot](https://raw.githubusercontent.com/Geetanshi-jain/Ats_microService_Integration/main/response1.jpg.jpeg)
+
 
 ### Pagination Implementation
 The service uses a recursive fetching strategy to ensure all data is retrieved, even if the ATS paginates its responses.
