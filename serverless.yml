@@ -1,0 +1,43 @@
+service: ats-integration
+
+provider:
+  name: aws
+  runtime: python3.9
+  region: us-east-1
+  stage: ${opt:stage, 'dev'}
+  environment:
+    ATS_API_KEY: ${env:ATS_API_KEY, 'mock-key'}
+    ATS_BASE_URL: ${env:ATS_BASE_URL, 'https://mock-ats.com'}
+
+plugins:
+  - serverless-offline
+  # - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    dockerizePip: true
+
+functions:
+  getJobs:
+    handler: handler.get_jobs
+    events:
+      - http:
+          path: jobs
+          method: get
+          cors: true
+
+  createCandidate:
+    handler: handler.create_candidate
+    events:
+      - http:
+          path: candidates
+          method: post
+          cors: true
+
+  getApplications:
+    handler: handler.get_applications
+    events:
+      - http:
+          path: applications
+          method: get
+          cors: true

@@ -1,0 +1,91 @@
+{
+  "C:\\Users\\jaing\\OneDrive\\Desktop\\integravity\\serverless.yml": {
+    "versionFramework": "4.31.2",
+    "servicePath": "C:\\Users\\jaing\\OneDrive\\Desktop\\integravity\\serverless.yml",
+    "serviceConfigFileName": "serverless.yml",
+    "service": {
+      "service": "ats-integration",
+      "provider": {
+        "name": "aws",
+        "runtime": "python3.9",
+        "region": "us-east-1",
+        "stage": "dev",
+        "environment": {
+          "ATS_API_KEY": "<REDACTED>",
+          "ATS_BASE_URL": "${env:ATS_BASE_URL, 'https://mock-ats.com'}"
+        }
+      },
+      "plugins": [
+        "serverless-offline",
+        "serverless-python-requirements"
+      ],
+      "custom": {
+        "pythonRequirements": {
+          "dockerizePip": true
+        }
+      },
+      "functions": {
+        "getJobs": {
+          "handler": "handler.get_jobs",
+          "events": [
+            {
+              "http": {
+                "path": "jobs",
+                "method": "get",
+                "cors": true
+              }
+            }
+          ]
+        },
+        "createCandidate": {
+          "handler": "handler.create_candidate",
+          "events": [
+            {
+              "http": {
+                "path": "candidates",
+                "method": "post",
+                "cors": true
+              }
+            }
+          ]
+        },
+        "getApplications": {
+          "handler": "handler.get_applications",
+          "events": [
+            {
+              "http": {
+                "path": "applications",
+                "method": "get",
+                "cors": true
+              }
+            }
+          ]
+        }
+      }
+    },
+    "provider": {
+      "name": "aws",
+      "runtime": "python3.9",
+      "region": "us-east-1",
+      "stage": "dev",
+      "environment": {
+        "ATS_API_KEY": "<REDACTED>",
+        "ATS_BASE_URL": "${env:ATS_BASE_URL, 'https://mock-ats.com'}"
+      }
+    },
+    "error": {
+      "message": "You must sign in or use a license key with Serverless Framework V.4 and later versions. Please use \"serverless login\".",
+      "stack": "Error: You must sign in or use a license key with Serverless Framework V.4 and later versions. Please use \"serverless login\".\n    at Authentication.getAuthenticatedData (file:///C:/Users/jaing/.serverless/releases/4.31.2/package/dist/sf-core.js:919:11570)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async Authentication.authenticate (file:///C:/Users/jaing/.serverless/releases/4.31.2/package/dist/sf-core.js:922:4140)\n    at async TraditionalRunner.resolveVariablesAndAuthenticate (file:///C:/Users/jaing/.serverless/releases/4.31.2/package/dist/sf-core.js:930:2394)\n    at async TraditionalRunner.run (file:///C:/Users/jaing/.serverless/releases/4.31.2/package/dist/sf-core.js:1953:27828)\n    at async route (file:///C:/Users/jaing/.serverless/releases/4.31.2/package/dist/sf-core.js:2167:2848)\n    at async Object.run (file:///C:/Users/jaing/.serverless/releases/4.31.2/package/dist/sf-core.js:2168:3893)\n    at async run2 (file:///C:/Users/jaing/.serverless/releases/4.31.2/package/dist/sf-core.js:2168:5047)"
+    },
+    "serviceRawFile": "service: ats-integration\r\n\r\nprovider:\r\n  name: aws\r\n  runtime: python3.9\r\n  region: us-east-1\r\n  stage: ${opt:stage, 'dev'}\r\n  environment:\r\n    ATS_API_KEY: ${env:ATS_API_KEY, 'mock-key'}\r\n    ATS_BASE_URL: ${env:ATS_BASE_URL, 'https://mock-ats.com'}\r\n\r\nplugins:\r\n  - serverless-offline\r\n  - serverless-python-requirements\r\n\r\ncustom:\r\n  pythonRequirements:\r\n    dockerizePip: true\r\n\r\nfunctions:\r\n  getJobs:\r\n    handler: handler.get_jobs\r\n    events:\r\n      - http:\r\n          path: jobs\r\n          method: get\r\n          cors: true\r\n\r\n  createCandidate:\r\n    handler: handler.create_candidate\r\n    events:\r\n      - http:\r\n          path: candidates\r\n          method: post\r\n          cors: true\r\n\r\n  getApplications:\r\n    handler: handler.get_applications\r\n    events:\r\n      - http:\r\n          path: applications\r\n          method: get\r\n          cors: true\r\n",
+    "command": [
+      "offline"
+    ],
+    "options": {},
+    "serviceProviderAwsCfStackId": null,
+    "serviceProviderAwsCfStackCreated": null,
+    "serviceProviderAwsCfStackUpdated": null,
+    "serviceProviderAwsCfStackStatus": null,
+    "serviceProviderAwsCfStackOutputs": null
+  }
+}
