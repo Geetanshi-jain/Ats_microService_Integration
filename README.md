@@ -15,23 +15,7 @@
 - AWS Credentials (if deploying to AWS)
 
 
-## 🛠️ Folder Structure
-```text
-ats-microservice/
-├── src/
-│   ├── handlers/          # Lambda Entry Points (REST API)
-│   │   ├── jobs.py         # GET /jobs
-│   │   ├── candidates.py   # POST /candidates
-│   │   └── applications.py # GET /applications
-│   ├── services/          # Core Business Logic
-│   │   └── ats/           # ATS Integration Layer
-│   │       ├── base.py    # Interface Definition
-│   │       ├── factory.py # Provider Selector
-│   │       ├── mock.py    # Mock Provider
-│   │       └── zoho.py    # Zoho Recruit Stub
-├── serverless.yml         # INFRA-as-Code (AWS Lambda Config)
-├── package.json           # Plugin Management
-└── requirements.txt       # Python Dependencies
+
 
 ##Installation
 
@@ -115,6 +99,9 @@ List applications for a given job.
 
 ![GET /jobs API Screenshot](https://raw.githubusercontent.com/Geetanshi-jain/Ats_microService_Integration/main/response1.jpg.jpeg)
 
+### 📸 POST /candidates API – Sample Response
+
+![POST /candidates API Screenshot](https://raw.githubusercontent.com/Geetanshi-jain/Ats_microService_Integration/main/response2.jpg.jpeg)
 
 ### Pagination Implementation
 The service uses a recursive fetching strategy to ensure all data is retrieved, even if the ATS paginates its responses.
