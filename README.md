@@ -15,7 +15,7 @@
 - AWS Credentials (if deploying to AWS)
 ### folder Structure
 Ats_microService_Integration/
-│
+```│
 ├── serverless.yml          # Serverless framework configuration (routes, functions)
 ├── handler.py              # Main Lambda handlers (API logic)
 ├── requirements.txt        # Python dependencies
@@ -43,7 +43,7 @@ Ats_microService_Integration/
 ├── README.md               # Project documentation
 └── SETUP.md                # Setup & environment configuration guide
 
-
+```
 
 ##Installation
 
