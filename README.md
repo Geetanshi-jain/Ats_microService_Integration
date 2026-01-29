@@ -13,7 +13,35 @@
 - Node.js & npm (for Serverless Framework)
 - Python 3.9+
 - AWS Credentials (if deploying to AWS)
-
+### folder Structure
+Ats_microService_Integration/
+│
+├── serverless.yml          # Serverless framework configuration (routes, functions)
+├── handler.py              # Main Lambda handlers (API logic)
+├── requirements.txt        # Python dependencies
+├── package.json            # Node.js dependencies (serverless, plugins)
+├── package-lock.json
+│
+├── services/               # ATS integration business logic
+│   └── ats_service.py
+│
+├── providers/              # External ATS API clients / adapters
+│
+├── utils/                  # Common utility functions (response, errors, helpers)
+│
+├── config/                 # Configuration files
+│
+├── scripts/                # Helper / setup scripts
+│
+├── tests/                  # Unit & integration tests
+│
+├── mock_db.json             # Mock ATS data (for local testing)
+│
+├── response1.jpg.jpeg      # Screenshot: GET /jobs API response
+├── response2.jpg.jpeg      # Screenshot: POST /candidates API response
+│
+├── README.md               # Project documentation
+└── SETUP.md                # Setup & environment configuration guide
 
 
 
