@@ -1,11 +1,6 @@
 # ATS Integration Microservice
  serverless Python microservice that provides a unified REST API for integrating with multiple Applicant Tracking Systems (ATS) like Zoho, Greenhouse, and Workable.
 
-<<<<<<< HEAD
-A serverless Python microservice that provides a unified REST API for integrating with multiple Applicant Tracking Systems (ATS) like Zoho, Greenhouse, and Workable.
-=======
->>>>>>> 8e65e979a293622e71b37cc14297c82a155f3bdb
-
 ---
 
 ## 1. ATS Setup & Access
