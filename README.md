@@ -176,56 +176,6 @@ The service uses a recursive fetching strategy to ensure all data is retrieved, 
 *   **Concurrency & Speed**: Pages are currently fetched **sequentially** (one at a time) to respect ATS rate limits and avoid overwhelming the external API.
 *   **Data Source**: All pages are aggregated into a single list before being returned to the user, providing a seamless "fetch all" experience.
 
----
-**Maintained by:** Geetanshi Jain / ATS Integration Team
-=======
-- **URL**: `/dev/candidates`
-- **Method**: `POST`
-- **Body**:
-  ```json
-  {
-    "name": "Jane Doe",
-    "email": "jane@example.com",
-    "phone": "555-0199",
-    "resume_url": "https://resume.link/jane",
-    "job_id": "job-101"
-  }
-  ```
-- **Response**: `201 Created`
-**Response Screenshot:**
-*(Place screenshot here)*
-
-### 3. Get Applications
-List applications for a given job.
-
-- **URL**: `/dev/applications?job_id=job-101`
-- **Method**: `GET`
-- **Response**:
-  ```json
-  [
-    {
-      "id": "app-1234abcd",
-      "candidate_name": "Jane Doe",
-      "email": "jane@example.com",
-      "status": "APPLIED"
-    }
-  ]
-  ```
-### 📸 GET /jobs API – Sample Response
-
-![GET /jobs API Screenshot](https://raw.githubusercontent.com/Geetanshi-jain/Ats_microService_Integration/main/response1.jpg.jpeg)
-
-### 📸 POST /candidates API – Sample Response
-
-![POST /candidates API Screenshot](https://raw.githubusercontent.com/Geetanshi-jain/Ats_microService_Integration/main/response2.jpg.jpeg)
-
-### Pagination Implementation
-The service uses a recursive fetching strategy to ensure all data is retrieved, even if the ATS paginates its responses.
-
-*   **How it works**: The `utils/pagination.py` utility handles the loop. It calls the provider's fetch method repeatedly, incrementing the `page` number each time until no more results are found.
-*   **Concurrency & Speed**: Pages are currently fetched **sequentially** (one at a time) to respect ATS rate limits and avoid overwhelming the external API.
-*   **Safety Break**: To prevent infinite loops with mock data or misbehaving APIs, there is a hard safety limit of **100 pages** per request.
-*   **Data Source**: All pages are aggregated into a single list before being returned to the user, providing a seamless "fetch all" experience.
 
 ##Developed by Geetanshi jain 29 jan 2026
->>>>>>> 8e65e979a293622e71b37cc14297c82a155f3bdb
+
