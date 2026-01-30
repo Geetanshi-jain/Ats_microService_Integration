@@ -120,7 +120,7 @@ curl http://localhost:3000/dev/jobs
 ```
 
 **Response Screenshot:**
-![Jobs Output](file:///c:/Users/jaing/OneDrive/Desktop/Ats_microService_integration/screenshots/jobs_output.png)
+![Jobs Output](file:///c:/Users/jaing/OneDrive/Desktop/Ats_microService_integration/(2)(2).jpeg)
 
 ---
 
@@ -133,7 +133,7 @@ curl.exe -X POST http://localhost:3000/dev/candidates -H "Content-Type: applicat
 ```
 
 **Response Screenshot:**
-![Candidate Output](file:///c:/Users/jaing/OneDrive/Desktop/Ats_microService_integration/screenshots/candidate_output.png)
+![Candidate Output](file:///c:/Users/jaing/OneDrive/Desktop/Ats_microService_integration/candidate.jpeg)
 
 ---
 
@@ -146,7 +146,7 @@ curl "http://localhost:3000/dev/applications?job_id=210908000000354790"
 ```
 
 **Response Screenshot:**
-![Applications Output](file:///c:/Users/jaing/OneDrive/Desktop/Ats_microService_integration/screenshots/applications_output.png)
+![Applications Output](file:///c:/Users/jaing/OneDrive/Desktop/Ats_microService_integration/app.jpeg)
 
 ---
 
