@@ -98,8 +98,6 @@ Ats_microService_Integration/
 
 ## Running Locally
 
-Use `serverless-offline` to run the API locally.
->>>>>>> 8e65e979a293622e71b37cc14297c82a155f3bdb
 
 ### Running the Service
 ```bash
@@ -120,7 +118,8 @@ curl http://localhost:3000/dev/jobs
 ```
 
 **Response Screenshot:**
-![Jobs Output](file:///c:/Users/jaing/OneDrive/Desktop/Ats_microService_integration/(2)(2).jpeg)
+![ATS Flow Screenshot](https://raw.githubusercontent.com/Geetanshi-jain/Ats_microService_Integration/main/2%20(2).jpeg)
+
 
 ---
 
@@ -133,7 +132,8 @@ curl.exe -X POST http://localhost:3000/dev/candidates -H "Content-Type: applicat
 ```
 
 **Response Screenshot:**
-![Candidate Output](file:///c:/Users/jaing/OneDrive/Desktop/Ats_microService_integration/candidate.jpeg)
+![Candidate Creation Screenshot](https://raw.githubusercontent.com/Geetanshi-jain/Ats_microService_Integration/main/candidate.jpeg)
+
 
 ---
 
@@ -146,7 +146,8 @@ curl "http://localhost:3000/dev/applications?job_id=210908000000354790"
 ```
 
 **Response Screenshot:**
-![Applications Output](file:///c:/Users/jaing/OneDrive/Desktop/Ats_microService_integration/app.jpeg)
+![Application API Screenshot](https://raw.githubusercontent.com/Geetanshi-jain/Ats_microService_Integration/main/app.jpeg)
+
 
 ---
 
