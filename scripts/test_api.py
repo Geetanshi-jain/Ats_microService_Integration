@@ -8,28 +8,47 @@ sys.path.append(project_root)
 import handler
 import json
 
-def test_jobs():
+def test_full_flow():
+    print("--- Testing Full Zoho Flow ---")
+    
+    # 1. Test GET /jobs
     print("Testing GET /jobs...")
-    res = handler.get_jobs({}, {})
-    print(f"Status: {res['statusCode']}")
-    print(f"Body: {res['body']}")
+    res_jobs = handler.get_jobs({}, {})
+    jobs = json.loads(res_jobs['body'])
+    print(f"Status: {res_jobs['statusCode']}, Jobs Found: {len(jobs)}")
+    print(f"Jobs Body: {json.dumps(jobs, indent=2)}")
+    
+    if not jobs:
+        print("No real jobs found in Zoho. Cannot test candidate creation efficiently.")
+        return
+        
+    # Get the first real Job ID
+    real_job_id = jobs[0].get('id')
+    print(f"Using Real Job ID: {real_job_id} for further tests.")
 
-def test_candidates():
-    print("\nTesting POST /candidates...")
-    body = {"name": "Test User", "email": "test@example.com", "job_id": "zoho-j1"}
+    # 2. Test POST /candidates
+    print(f"\nTesting POST /candidates for Job: {real_job_id}...")
+    import time
+    timestamp = int(time.time())
+    body = {
+        "name": f"Test User {timestamp}", 
+        "email": f"test_{timestamp}@example.com", 
+        "job_id": real_job_id
+    }
     event = {"body": json.dumps(body)}
-    res = handler.create_candidate(event, {})
-    print(f"Status: {res['statusCode']}")
-    print(f"Body: {res['body']}")
+    res_cand = handler.create_candidate(event, {})
+    print(f"Status: {res_cand['statusCode']}")
+    print(f"Body: {res_cand['body']}")
 
-def test_applications():
-    print("\nTesting GET /applications...")
-    event = {"queryStringParameters": {"job_id": "zoho-j1"}}
-    res = handler.get_applications(event, {})
-    print(f"Status: {res['statusCode']}")
-    print(f"Body: {res['body']}")
+    # 3. Test GET /applications
+    print(f"\nTesting GET /applications for Job: {real_job_id}...")
+    event_app = {"queryStringParameters": {"job_id": real_job_id}}
+    res_app = handler.get_applications(event_app, {})
+    print(f"Status: {res_app['statusCode']}")
+    apps = json.loads(res_app['body'])
+    print(f"Applications Found: {len(apps)}")
+    if apps:
+        print(f"Applications Body (First 3): {json.dumps(apps[:3], indent=2)}")
 
 if __name__ == "__main__":
-    test_jobs()
-    test_candidates()
-    test_applications()
+    test_full_flow()

@@ -4,14 +4,20 @@ provider:
   name: aws
   runtime: python3.9
   region: us-east-1
+  timeout: 30  
   stage: ${opt:stage, 'dev'}
   environment:
     ATS_API_KEY: ${env:ATS_API_KEY, 'mock-key'}
     ATS_BASE_URL: ${env:ATS_BASE_URL, 'https://mock-ats.com'}
+    ZOHO_CLIENT_ID: ${env:ZOHO_CLIENT_ID, ''}
+    ZOHO_CLIENT_SECRET: ${env:ZOHO_CLIENT_SECRET, ''}
+    ZOHO_REFRESH_TOKEN: ${env:ZOHO_REFRESH_TOKEN, ''}
+    ZOHO_BASE_URL: ${env:ZOHO_BASE_URL, 'https://recruit.zoho.in/recruit/v2'}
+    ZOHO_AUTH_URL: ${env:ZOHO_AUTH_URL, 'https://accounts.zoho.in/oauth/v2/token'}
 
 plugins:
+  - serverless-dotenv-plugin
   - serverless-offline
-  # - serverless-python-requirements
 
 custom:
   pythonRequirements:

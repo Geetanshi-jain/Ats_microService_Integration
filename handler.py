@@ -29,7 +29,11 @@ def create_candidate(event, context):
              return response(400, {"error": f"Missing required fields: {', '.join(missing)}"})
 
         result = ats_service.register_candidate(body)
-        return response(201, result)
+        response_body = {
+            "message": "Candidate applied successfully",
+            "application_id": result.get("application_id")
+        }
+        return response(201, response_body)
     except json.JSONDecodeError:
         return response(400, {"error": "Invalid JSON in request body"})
     except Exception as e:

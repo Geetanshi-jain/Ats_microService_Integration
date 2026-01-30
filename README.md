@@ -1,98 +1,127 @@
 # ATS Integration Microservice
 
-A serverless Python backend service that integrates with an Applicant Tracking System (ATS).
+A serverless Python microservice that provides a unified REST API for integrating with multiple Applicant Tracking Systems (ATS) like Zoho, Greenhouse, and Workable.
 
-## Features
-- **Unified API**: Abstraction layer over ATS.
-- **Serverless**: Built with Serverless Framework and AWS Lambda.
-- **Mock ATS**: Includes a mock implementation for testing and development.
+---
 
-## Setup
+## 1. ATS Setup & Access
+
+This service abstracts the complexity of different ATS providers. To use it, you need to set up accounts and generate credentials.
+
+### How to Create a Sandbox / Free Trial
+*   **Zoho Recruit**: Visit the [Zoho Recruit Free Trial](https://www.zoho.com/recruit/signup.html) page. They offer a 15-day free trial of their enterprise features.
+*   **Greenhouse**: Standard sandboxes are usually reserved for customers or partners. You can explore their APIs using their [Developer Portal](https://developers.greenhouse.io/).
+*   **Workable**: Sign up for a 15-day free trial on the [Workable website](https://www.workable.com/free-trial/). No credit card is required.
+
+### How to Generate API Keys / Tokens
+*   **Zoho Recruit (OAuth 2.0)**:
+    1.  Go to the [Zoho API Console](https://api-console.zoho.in/).
+    2.  Click **Add Client** and choose **Self Client**.
+    3.  In the **Generate Code** tab, enter these scopes: `ZohoRecruit.modules.all,ZohoRecruit.settings.modules.all`.
+    4.  Set the duration and click **Generate**. Copy the Code.
+    5.  Run the helper script: `python scripts/get_zoho_token.py` and provide your Client ID, Secret, and the generated Code.
+    6.  Copy the resulting **Refresh Token** to your `.env` file.
+*   **Greenhouse**: Go to `Configure (Gear Icon) -> Dev Center -> API Credential Management` and click "Create New API Key".
+*   **Workable**: Navigate to `Settings -> Integrations -> Access Tokens` and generate a new token.
+
+---
+
+## 2. Local Development
 
 ### Prerequisites
-- Node.js & npm (for Serverless Framework)
 - Python 3.9+
-- AWS Credentials (if deploying to AWS)
+- Node.js & NPM (for Serverless Framework)
+- Active ATS credentials (API Key or Refresh Token)
 
-### Installation
+### Local Setup
+1.  **Clone the repository and enter the directory**:
+    ```bash
+    cd Ats_microService_integration
+    ```
+2.  **Set up a Virtual Environment**:
+    ```powershell
+    python -m venv venv
+    .\venv\Scripts\activate
+    ```
+3.  **Install Dependencies**:
+    ```powershell
+    pip install -r requirements.txt
+    npm install
+    ```
+4.  **Configure Environment**: Create a `.env` file from the [.env.example](file:///c:/Users/jaing/OneDrive/Desktop/Ats_microService_integration/.env.example) template.
 
-1. **Install Serverless Framework and Plugins**:
-   ```bash
-   npm install
-   ```
-   (This will install `serverless` and `serverless-offline` defined in `package.json` if it existed, but we rely on global or just generic install. Better: `npm install -D serverless-offline serverless-python-requirements`)
-
-2. **Install Python Dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-## Running Locally
-
-Use `serverless-offline` to run the API locally.
-
+### Running the Service
 ```bash
-npx serverless offline
+npx serverless offline start
+```
+The service will be available at `http://localhost:3000/dev`.
+
+---
+
+## 3. API Documentation & Examples
+
+### [GET] `/jobs`
+Fetches a normalized list of all available job openings.
+
+**Curl Command:**
+```bash
+curl http://localhost:3000/dev/jobs
 ```
 
-The API will be available at `http://localhost:3000`.
+**Response Screenshot:**
+![Jobs Output](file:///c:/Users/jaing/OneDrive/Desktop/Ats_microService_integration/screenshots/jobs_output.png)
 
-## API Endpoints
+---
 
-### 1. Get Jobs
-Return list of open jobs.
+### [POST] `/candidates`
+Submits a candidate application for a specific job.
 
-- **URL**: `/dev/jobs`
-- **Method**: `GET`
-- **Response**:
-  ```json
-  [
+**Curl Command:**
+```bash
+curl.exe -X POST http://localhost:3000/dev/candidates -H "Content-Type: application/json" -d "{\`"name\`": \`"Jane Doe\`", \`"email\`": \`"jane.doe453@example.com\`", \`"phone\`": \`"555-0199998\`", \`"job_id\`": \`"210908000000354790\`"}"
+```
+
+**Response Screenshot:**
+![Candidate Output](file:///c:/Users/jaing/OneDrive/Desktop/Ats_microService_integration/screenshots/candidate_output.png)
+
+---
+
+### [GET] `/applications?job_id=ID`
+Retrieves all applications associated with a specific job ID.
+
+**Curl Command:**
+```bash
+curl "http://localhost:3000/dev/applications?job_id=210908000000354790"
+```
+
+**Response Screenshot:**
+![Applications Output](file:///c:/Users/jaing/OneDrive/Desktop/Ats_microService_integration/screenshots/applications_output.png)
+
+---
+
+## 4. Error Handling & Pagination Implementation
+
+For a technical deep dive, see [doc.md](file:///c:/Users/jaing/OneDrive/Desktop/Ats_microService_integration/doc.md).
+
+### Error Handling Flow
+When an ATS returns an error (e.g., 401 Unauthorized or 404 Not Found), the microservice catches the exception in the Provider layer and wraps it into a **Clean JSON Error**.
+
+**Internal Logic:**
+1.  Provider raises `ATSError(message, status_code)`.
+2.  `handler.py` catches the error in a `try/except` block.
+3.  Client receives:
+    ```json
     {
-      "id": "job-101",
-      "title": "Software Engineer",
-      "location": "Remote",
-      "status": "OPEN",
-      "external_url": "https://ats.mock/jobs/101"
+      "error": "Friendly error message"
     }
-  ]
-  ```
+    ```
 
-### 2. Create Candidate & Apply
-Create a candidate and apply them to a job.
+### Pagination Implementation
+The service uses a recursive fetching strategy to ensure all data is retrieved, even if the ATS paginates its responses.
 
-- **URL**: `/dev/candidates`
-- **Method**: `POST`
-- **Body**:
-  ```json
-  {
-    "name": "Jane Doe",
-    "email": "jane@example.com",
-    "phone": "555-0199",
-    "resume_url": "https://resume.link/jane",
-    "job_id": "job-101"
-  }
-  ```
-- **Response**: `201 Created`
+*   **How it works**: The `utils/pagination.py` utility handles the loop. It calls the provider's fetch method repeatedly, incrementing the `page` number each time until no more results are found.
+*   **Concurrency & Speed**: Pages are currently fetched **sequentially** (one at a time) to respect ATS rate limits and avoid overwhelming the external API.
+*   **Data Source**: All pages are aggregated into a single list before being returned to the user, providing a seamless "fetch all" experience.
 
-### 3. Get Applications
-List applications for a given job.
-
-- **URL**: `/dev/applications?job_id=job-101`
-- **Method**: `GET`
-- **Response**:
-  ```json
-  [
-    {
-      "id": "app-1234abcd",
-      "candidate_name": "Jane Doe",
-      "email": "jane@example.com",
-      "status": "APPLIED"
-    }
-  ]
-  ```
-
-## Configuration
-
-Environment variables in `serverless.yml`:
-- `ATS_API_KEY`: API Key for the real ATS.
-- `ATS_BASE_URL`: Base URL for the real ATS.
+---
+**Maintained by:** Geetanshi Jain / ATS Integration Team
