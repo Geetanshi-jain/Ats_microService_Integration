@@ -1,6 +1,10 @@
 # ATS Integration Microservice
+ serverless Python microservice that provides a unified REST API for integrating with multiple Applicant Tracking Systems (ATS) like Zoho, Greenhouse, and Workable.
 
+<<<<<<< HEAD
 A serverless Python microservice that provides a unified REST API for integrating with multiple Applicant Tracking Systems (ATS) like Zoho, Greenhouse, and Workable.
+=======
+>>>>>>> 8e65e979a293622e71b37cc14297c82a155f3bdb
 
 ---
 
@@ -30,6 +34,7 @@ This service abstracts the complexity of different ATS providers. To use it, you
 
 ### Prerequisites
 - Python 3.9+
+<<<<<<< HEAD
 - Node.js & NPM (for Serverless Framework)
 - Active ATS credentials (API Key or Refresh Token)
 
@@ -49,6 +54,57 @@ This service abstracts the complexity of different ATS providers. To use it, you
     npm install
     ```
 4.  **Configure Environment**: Create a `.env` file from the [.env.example](file:///c:/Users/jaing/OneDrive/Desktop/Ats_microService_integration/.env.example) template.
+=======
+- AWS Credentials (if deploying to AWS)
+### folder Structure
+Ats_microService_Integration/
+```│
+├── serverless.yml          # Serverless framework configuration (routes, functions)
+├── handler.py              # Main Lambda handlers (API logic)
+├── requirements.txt        # Python dependencies
+├── package.json            # Node.js dependencies (serverless, plugins)
+├── package-lock.json
+│
+├── services/               # ATS integration business logic
+│   └── ats_service.py
+│
+├── providers/              # External ATS API clients / adapters
+│
+├── utils/                  # Common utility functions (response, errors, helpers)
+│
+├── config/                 # Configuration files
+│
+├── scripts/                # Helper / setup scripts
+│
+├── tests/                  # Unit & integration tests
+│
+├── mock_db.json             # Mock ATS data (for local testing)
+│
+├── response1.jpg.jpeg      # Screenshot: GET /jobs API response
+├── response2.jpg.jpeg      # Screenshot: POST /candidates API response
+│
+├── README.md               # Project documentation
+└── SETUP.md                # Setup & environment configuration guide
+
+```
+
+##Installation
+
+1. **Install Serverless Framework and Plugins**:
+   ```bash
+   npm install
+   ```
+   (This will install `serverless` and `serverless-offline` defined in `package.json` if it existed, but we rely on global or just generic install. Better: `npm install -D serverless-offline serverless-python-requirements`)
+
+2. **Install Python Dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+## Running Locally
+
+Use `serverless-offline` to run the API locally.
+>>>>>>> 8e65e979a293622e71b37cc14297c82a155f3bdb
 
 ### Running the Service
 ```bash
@@ -119,9 +175,61 @@ When an ATS returns an error (e.g., 401 Unauthorized or 404 Not Found), the micr
 ### Pagination Implementation
 The service uses a recursive fetching strategy to ensure all data is retrieved, even if the ATS paginates its responses.
 
+<<<<<<< HEAD
 *   **How it works**: The `utils/pagination.py` utility handles the loop. It calls the provider's fetch method repeatedly, incrementing the `page` number each time until no more results are found.
 *   **Concurrency & Speed**: Pages are currently fetched **sequentially** (one at a time) to respect ATS rate limits and avoid overwhelming the external API.
 *   **Data Source**: All pages are aggregated into a single list before being returned to the user, providing a seamless "fetch all" experience.
 
 ---
 **Maintained by:** Geetanshi Jain / ATS Integration Team
+=======
+- **URL**: `/dev/candidates`
+- **Method**: `POST`
+- **Body**:
+  ```json
+  {
+    "name": "Jane Doe",
+    "email": "jane@example.com",
+    "phone": "555-0199",
+    "resume_url": "https://resume.link/jane",
+    "job_id": "job-101"
+  }
+  ```
+- **Response**: `201 Created`
+**Response Screenshot:**
+*(Place screenshot here)*
+
+### 3. Get Applications
+List applications for a given job.
+
+- **URL**: `/dev/applications?job_id=job-101`
+- **Method**: `GET`
+- **Response**:
+  ```json
+  [
+    {
+      "id": "app-1234abcd",
+      "candidate_name": "Jane Doe",
+      "email": "jane@example.com",
+      "status": "APPLIED"
+    }
+  ]
+  ```
+### 📸 GET /jobs API – Sample Response
+
+![GET /jobs API Screenshot](https://raw.githubusercontent.com/Geetanshi-jain/Ats_microService_Integration/main/response1.jpg.jpeg)
+
+### 📸 POST /candidates API – Sample Response
+
+![POST /candidates API Screenshot](https://raw.githubusercontent.com/Geetanshi-jain/Ats_microService_Integration/main/response2.jpg.jpeg)
+
+### Pagination Implementation
+The service uses a recursive fetching strategy to ensure all data is retrieved, even if the ATS paginates its responses.
+
+*   **How it works**: The `utils/pagination.py` utility handles the loop. It calls the provider's fetch method repeatedly, incrementing the `page` number each time until no more results are found.
+*   **Concurrency & Speed**: Pages are currently fetched **sequentially** (one at a time) to respect ATS rate limits and avoid overwhelming the external API.
+*   **Safety Break**: To prevent infinite loops with mock data or misbehaving APIs, there is a hard safety limit of **100 pages** per request.
+*   **Data Source**: All pages are aggregated into a single list before being returned to the user, providing a seamless "fetch all" experience.
+
+##Developed by Geetanshi jain 29 jan 2026
+>>>>>>> 8e65e979a293622e71b37cc14297c82a155f3bdb
