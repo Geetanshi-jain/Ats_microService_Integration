@@ -171,7 +171,7 @@ When an ATS returns an error (e.g., 401 Unauthorized or 404 Not Found), the micr
 ### Pagination Implementation
 The service uses a recursive fetching strategy to ensure all data is retrieved, even if the ATS paginates its responses.
 
-<<<<<<< HEAD
+
 *   **How it works**: The `utils/pagination.py` utility handles the loop. It calls the provider's fetch method repeatedly, incrementing the `page` number each time until no more results are found.
 *   **Concurrency & Speed**: Pages are currently fetched **sequentially** (one at a time) to respect ATS rate limits and avoid overwhelming the external API.
 *   **Data Source**: All pages are aggregated into a single list before being returned to the user, providing a seamless "fetch all" experience.
