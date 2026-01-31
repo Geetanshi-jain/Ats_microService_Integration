@@ -29,7 +29,7 @@ This service abstracts the complexity of different ATS providers. To use it, you
 
 ### Prerequisites
 - Python 3.9+
-<<<<<<< HEAD
+
 - Node.js & NPM (for Serverless Framework)
 - Active ATS credentials (API Key or Refresh Token)
 
